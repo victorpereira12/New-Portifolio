@@ -1,50 +1,196 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
     <script src="main.js" defer></script>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
     <title>Portifólio de Vicor</title>
-</head>
-<body>
+  </head>
+  <body>
     <header>
       <section>
-      
-         <div class="logo">
-            <img src="./assets/logo_victor-removebg-preview.png" alt="">
-         </div>
-         <nav class="navbar">
-            <ul class="nav-list">
-              <li class="navbar-list"><a href="#">Home</a></li> 
-              <li class="navbar-list"><a href="#">Sobre mim</a></li>
-              <li class="navbar-list"><a href="#">Projetos</a></li>
-              <li class="navbar-list"><a href="#">Contato</a></li>
-            </ul>
+        <div class="logo">
+          <img src="./assets/logo_victor-removebg-preview.png" alt="" />
+        </div>
+        <nav class="navbar">
+          <ul class="nav-list">
+            <li class="navbar-list"><a href="#">Home</a></li>
+            <li class="navbar-list"><a href="#">Sobre mim</a></li>
+            <li class="navbar-list"><a href="#">Projetos</a></li>
+            <li class="navbar-list"><a href="#">Contato</a></li>
+          </ul>
         </nav>
-         <button onclick="menuMobile()">
-            <img class="menu-icon" src="./assets/icons8-cardápio-50.png" alt="">
-         </button>
-         
-      
-      </section> 
+        <button onclick="menuMobile()">
+          <img class="menu-icon" src="./assets/icons8-cardápio-50.png" alt="" />
+        </button>
+      </section>
       <div class="navbar-mobile">
         <ul class="mobile-menu">
-            <li class="mobile"><a href="#">Home</a></li> 
-            <li class="mobile"><a href="#">Sobre mim</a></li>
-            <li class="mobile"><a href="#">Projetos</a></li>
-            <li class="mobile"><a href="#">Contato</a></li>
+          <li class="mobile"><a href="#home">Home</a></li>
+          <li class="mobile"><a href="#about">Sobre mim</a></li>
+          <li class="mobile"><a href="#projects">Projetos</a></li>
+          <li class="mobile"><a href="#forMe">Contato</a></li>
         </ul>
       </div>
-    </header> 
-    <!--
-    <section>
-        <div class="home-page">
-            <h1>Hi!</h1>
-            <h3>My name is Victor Pereira</h3>
-            <h3>Software Engineer Student</h3>
-       </div>
-    </section>--> 
-</body>
+    </header>
+
+    <section id="home">
+      <img class="victor" src="./assets/homeVictor.png" alt="" />
+      <p class="title">I’m software enginer and front-end developer</p>
+      <p class="text">
+        My name is Victor Pereira. I am 18 years old and I live in Campinas, SP.
+        I am a front-end developer and I am passionate about technology.
+      </p>
+      <a href="#forMe"> <button class="button">Send Hi!</button></a>
+      <div class="homeIcons">
+        <a href="https://www.instagram.com/victor_ofc019/" target="_blank">
+          <img src="./assets/insta.png" alt="logo do instagram"
+        /></a>
+        <a
+          href="https://www.linkedin.com/in/victor-de-oliveira-pereira/"
+          target="_blank"
+        >
+          <img src="./assets/linkedin.png" alt="logo do linkedin"
+        /></a>
+        <a href="https://github.com/victorpereira12" target="_blank"
+          ><img src="./assets/git.png" alt="logo do github"
+        /></a>
+        <a href="https://wa.me/qr/6WWSF6EETINTJ1" target="_blank">
+          <img src="./assets/wpp.png" alt="logo WhatsApp"
+        /></a>
+      </div>
+    </section>
+    <section id="about">
+      <p class="title">About me</p>
+      <img class="aboutImg" src="./assets/about.png" alt="" />
+      <p class="subTitle">Resume</p>
+      <p class="text">
+        Jovem profissional nascido em 25 de outubro de 2005, com o objetivo de
+        se tornar um desenvolvedor front-end. Sou altamente proativo, respeitoso
+        e tenho uma forte capacidade de aprender coisas novas rapidamente. Estou
+        comprometido com o contínuo melhoria e ansioso para contribuir para
+        projetos inovadores em um ambiente dinâmico ambiente de trabalho. Sou
+        formada em Tecnologia Eletromecânica pela O Senai e eu estamos cursando
+        o 2º semestre de Engenharia de Software na Wyden Unimetrocamp.
+      </p>
+      <p class="subTitle">Hobby</p>
+      <p class="text">
+        Amo tocar instrumentos; Tenho conhecimento em violão, guitarra, teclado,
+        baixo e bateria, e também canto!
+      </p>
+      <a
+        href="https://drive.google.com/file/d/1OatLbrbk__mvkbToRXH1p7R0hZ1RNnoX/view?usp=sharing"
+        target="_blank"
+      >
+        <button class="button">Download Curricle</button></a
+      >
+    </section>
+    <section id="projects">
+      <p class="title">projects</p>
+      <div class="projectsContainer">
+        <img src="./assets/gerador.png" alt="" />
+        <p class="subTitle">Gerador de senha</p>
+        <p class="text">Gerar uma senha aleatória de 5 à 30 caracteres</p>
+        <a
+          href="https://victorpereira12.github.io/Gerador-de-senha/"
+          target="_blank"
+          >Ver Site</a
+        >
+      </div>
+      <div class="projectsContainer">
+        <img src="./assets/previsão.png" alt="" />
+        <p class="subTitle">Previsão do tempo</p>
+        <p class="text">
+          Mostrar a previsão do tempo de qualquer local do mundo
+        </p>
+        <a
+          href="https://victorpereira12.github.io/PREVISAO-DO-TEMPO/"
+          target="_blank"
+          >Ver Site</a
+        >
+      </div>
+      <div class="projectsContainer">
+        <img src="./assets/cafe.png" alt="" />
+        <p class="subTitle">Landing Page Cafeteria</p>
+        <p class="text">
+          Uma landing page de uma cafeteria com menu, comentarios, local, e
+          etc..
+        </p>
+        <a href="https://victorpereira12.github.io/Site-Caf-/" target="_blank"
+          >Ver Site</a
+        >
+      </div>
+      <div class="projectsContainer">
+        <img src="./assets/nlw.png" alt="" />
+        <p class="subTitle">Site de viagens</p>
+        <p class="text">
+          Site para adicionar e marcar eventos com data e hora.
+        </p>
+        <a href="https://victorpereira12.github.io/NLW-Journey/" target="_blank"
+          >Ver Site</a
+        >
+      </div>
+      <div class="projectsContainer">
+        <img src="./assets/cat.png" alt="" />
+        <p class="subTitle">Adoção de gatos</p>
+        <p class="text">Site de uma instituição de adoção de gatos.</p>
+        <a href="#">Não Público</a>
+      </div>
+      <div class="projectsContainer">
+        <img src="./assets/clinica.png" alt="" />
+        <p class="subTitle">Cliníca Veterinária</p>
+        <p class="text">Site para uma clinica Veterinária.</p>
+        <a
+          href="https://victorpereira12.github.io/Clinica-Veterin-ria/"
+          target="_blank"
+          >Ver Site</a
+        >
+      </div>
+    </section>
+    <section id="forMe">
+      <p class="title">Fale comigo</p>
+      <div class="formeInfos">
+        <img src="./assets/insta.png" alt="" />
+        <p class="forMesubTitle">Instagram</p>
+        <p class="forMetext">@victor_ofc019</p>
+        <a
+          href="https://www.instagram.com/victor_ofc019/"
+          target="_blank"
+          class="forMesubTitle"
+          >Fale Comigo -></a
+        >
+      </div>
+      <div class="formeInfos">
+        <img src="./assets/linkedin.png" alt="" />
+        <p class="forMesubTitle">Linkedin</p>
+        <p class="forMetext">Victor de Oliveira Pereira</p>
+        <a
+          href="https://www.linkedin.com/in/victor-de-oliveira-pereira/"
+          target="_blank"
+          class="forMesubTitle"
+          >Fale Comigo -></a
+        >
+      </div>
+      <div class="formeInfos">
+        <img src="./assets/email.png" alt="" />
+        <p class="forMesubTitle">Email</p>
+        <p class="forMetext">victor386pereira@gmail.com</p>
+        <a href="#home" class="forMesubTitle">Fale Comigo -></a>
+      </div>
+    </section>
+    <footer>
+      <img
+        src="./assets/logo_victor-removebg-preview.png"
+        alt="logo de Victor"
+      />
+      <p class="footerText">
+        © Victor de Oliveira Pereira. Todos os direitos reservados
+      </p>
+    </footer>
+  </body>
 </html>
