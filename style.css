@@ -28,7 +28,6 @@ header {
   left: 0;
   right: 0;
   z-index: 100;
-  position: fixed;
 }
 header section {
   display: flex;
@@ -235,4 +234,131 @@ footer img {
   font-size: 12px;
   color: rgb(194, 194, 194);
   padding-bottom: 20px;
+}
+@media (min-width: 600px) {
+  header section {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+  header {
+    border-bottom: none;
+  }
+  .menu-icon {
+    display: none;
+  }
+  .navbar-mobile {
+    display: none;
+  }
+  .logo img {
+    width: 150px;
+    margin-left: 80px;
+  }
+  .navbar {
+    display: flex;
+    margin-left: 380px;
+  }
+  .nav-list {
+    display: flex;
+    gap: 56px;
+    width: 100%;
+  }
+  .navbar-list a {
+    font-size: 18px;
+  }
+  .navbar-list a:hover {
+    border-bottom: 1px solid white;
+  }
+  /*HOME*/
+  #home {
+    margin-top: 200px;
+  }
+  .victor {
+    position: absolute;
+    right: 180px;
+    width: 350px;
+    height: 350px;
+  }
+  .homeDesktop {
+    margin-left: -450px;
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    align-items: baseline;
+  }
+  .homeDesktop .title {
+    width: 80%;
+    text-align: justify;
+    font-size: 30px;
+  }
+  .homeDesktop .text {
+    text-align: justify;
+    width: 90%;
+  }
+  .homeIcons {
+    gap: 10px;
+  }
+  .homeIcons img:hover {
+    padding: 5px;
+    background-color: #6b6b7a;
+    border-radius: 15px;
+  }
+  .button:hover {
+    background-color: hsl(240, 100%, 60%);
+    transition: 1s;
+  }
+  /*ABOUT*/
+
+  .aboutImg {
+    width: 400px;
+    height: 300px;
+  }
+  .aboutDesktop {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 50px;
+  }
+  .title {
+    font-size: 30px;
+    text-align: center;
+  }
+  .aboutDesktop .subTitle {
+    text-align: justify;
+    margin-left: 30px;
+  }
+  .aboutButton {
+    position: absolute;
+    right: 510px;
+    top: 1100px;
+  }
+  .aboutDesktop .text {
+    width: 100%;
+    margin-left: 30px;
+  }
+  /*PROJECTS*/
+
+  #projects {
+    margin-top: 200px;
+  }
+
+  .projectsDesktop {
+    max-width: 100%;
+    gap: 30px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
+  }
+  /*FOR ME*/
+  .forMeDesktop {
+    display: flex;
+    gap: 100px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin-left: 40px;
+    margin-top: 50px;
+  }
+  /*FOOTER*/
+  footer img {
+    width: 150px;
+  }
 }
