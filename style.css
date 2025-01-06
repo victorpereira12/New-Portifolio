@@ -293,6 +293,7 @@ footer img {
   .homeDesktop .text {
     text-align: justify;
     width: 90%;
+    font-size: 18px;
   }
   .homeIcons {
     gap: 10px;
