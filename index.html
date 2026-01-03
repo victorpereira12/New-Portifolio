@@ -3,231 +3,1813 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="style.css" />
-    <script src="main.js" defer></script>
+    <title>Victor Pereira | Portfolio</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap"
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
       rel="stylesheet"
     />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;800&display=swap");
 
-    <link rel="website icon" href="./assets/webIcon.png" type="png" />
-    <title>Portifólio de Victor</title>
+      :root {
+        --bg-home: #e7e7e7;
+        --bg-dark: #121212;
+        --text-dark: #1a1a1a;
+        --text-light: #f1f1f1;
+        --accent: #d4ff3f;
+        /* Alterado para um degradê cinza escuro elegante */
+        --grey-gradient: radial-gradient(
+          circle at center,
+          #252525 0%,
+          #121212 100%
+        );
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: var(--bg-home);
+        color: var(--text-dark);
+        overflow-x: hidden;
+      }
+
+      /* --- NAVEGAÇÃO --- */
+      nav {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        padding: 40px 60px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 200;
+      }
+
+      .logo {
+        font-weight: 800;
+        font-size: 28px;
+        letter-spacing: -2px;
+        z-index: 201;
+      }
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 35px;
+      }
+      .nav-links a {
+        text-decoration: none;
+        color: inherit;
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      .burger {
+        display: none;
+        width: 30px;
+        height: 16px;
+        flex-direction: column;
+        justify-content: space-between;
+        cursor: pointer;
+        z-index: 205;
+      }
+      .burger span {
+        display: block;
+        width: 100%;
+        height: 2px;
+        background-color: currentColor;
+      }
+
+      .menu-overlay {
+        position: fixed;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100vh;
+        background: var(--bg-dark);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 0 10%;
+        z-index: 190;
+        transition: left 0.6s cubic-bezier(0.85, 0, 0.15, 1);
+      }
+      .menu-overlay.active {
+        left: 0;
+      }
+      .menu-overlay a {
+        color: white;
+        text-decoration: none;
+        font-size: 50px;
+        font-weight: 800;
+        margin: 10px 0;
+        opacity: 0;
+        transform: translateX(-30px);
+      }
+
+      /* --- SESSÃO 1: HERO --- */
+      .section-hero {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+      }
+      #video-follow {
+        position: absolute;
+        width: 700px;
+        z-index: 1;
+        will-change: transform;
+      }
+      video {
+        width: 100%;
+        mix-blend-mode: multiply;
+        pointer-events: none;
+      }
+      .hero-content {
+        position: relative;
+        z-index: 10;
+        text-align: center;
+        pointer-events: none;
+      }
+      .hero-content h1 {
+        font-size: clamp(35px, 9vw, 80px);
+        font-weight: 500;
+        line-height: 1;
+        letter-spacing: -3px;
+      }
+
+      /* --- SESSÃO 2: ABOUT (EFEITO EXPANSÃO) --- */
+      .section-about {
+        position: relative;
+        width: 100%;
+        min-height: 100vh;
+        background: var(--bg-dark); /* Fundo cinza restaurado */
+        color: var(--text-light);
+        z-index: 50;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 100px 5%;
+        border-radius: 120px;
+        transform: scale(0.75);
+        will-change: transform, border-radius;
+        overflow: hidden;
+      }
+      .about-content {
+        max-width: 850px;
+        text-align: center;
+      }
+      .about-content h2 {
+        font-size: clamp(28px, 5vw, 42px);
+        font-weight: 500;
+        margin-bottom: 25px;
+        letter-spacing: -1px;
+      }
+      .about-content p {
+        font-size: 18px;
+        color: #b0b0b0;
+        line-height: 1.6;
+        margin-bottom: 40px;
+        max-width: 600px;
+        margin: 0 auto 40px;
+      }
+      .btn-about {
+        background-color: var(--accent);
+        color: #000;
+        padding: 18px 45px;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 600;
+        display: inline-block;
+        transition: 0.3s;
+      }
+
+      /* --- SESSÃO 3: SOBRE MIM --- */
+      .section-me {
+        background-color: var(--bg-dark);
+        color: white;
+        padding: 150px 5%;
+        position: relative;
+        z-index: 40;
+      }
+      .me-container {
+        display: flex;
+        gap: 80px;
+        max-width: 1200px;
+        margin: 0 auto;
+        align-items: stretch;
+      }
+      .me-photo-wrapper {
+        flex: 1;
+        position: relative;
+      }
+      .me-photo {
+        width: 100%;
+        padding-left: 40px;
+      }
+      .me-photo img {
+        width: 100%;
+        height: auto;
+        display: block;
+        filter: grayscale(100%);
+        transition: 0.5s;
+        border-radius: 10px;
+      }
+      .me-photo:hover img {
+        filter: grayscale(0%);
+      }
+      .me-content {
+        flex: 1;
+      }
+      .me-subtitle {
+        color: var(--accent);
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        font-size: 13px;
+        font-weight: 600;
+        display: block;
+        margin-bottom: 30px;
+      }
+      .me-text-block p {
+        font-size: 20px;
+        line-height: 1.6;
+        color: #ccc;
+        margin-bottom: 30px;
+        font-weight: 300;
+      }
+      .me-text-block strong {
+        color: white;
+        font-weight: 500;
+      }
+      .btn-cv {
+        margin-top: 40px;
+        display: inline-flex;
+        align-items: center;
+        gap: 15px;
+        color: white;
+        text-decoration: none;
+        font-weight: 500;
+        border-bottom: 1px solid var(--accent);
+        padding-bottom: 10px;
+        transition: 0.3s;
+      }
+      .btn-cv:hover {
+        color: var(--accent);
+        gap: 25px;
+      }
+
+      /* --- SESSÃO: CARREIRA --- */
+      .section-career {
+        background-color: var(--bg-dark);
+        color: white;
+        padding: 150px 5%;
+        position: relative;
+        z-index: 35;
+      }
+      .career-header {
+        text-align: center;
+        margin-bottom: 100px;
+      }
+      .career-header span {
+        color: var(--accent);
+        text-transform: uppercase;
+        letter-spacing: 5px;
+        font-size: 12px;
+        font-weight: 600;
+      }
+      .career-header h2 {
+        font-size: clamp(40px, 8vw, 70px);
+        font-weight: 800;
+        letter-spacing: -3px;
+        margin-top: 10px;
+      }
+
+      .timeline-container {
+        position: relative;
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 50px 0;
+      }
+      .timeline-line-base {
+        position: absolute;
+        left: 50%;
+        top: 0;
+        width: 2px;
+        height: 100%;
+        background: #222;
+        transform: translateX(-50%);
+      }
+      .timeline-line-progress {
+        position: absolute;
+        left: 50%;
+        top: 0;
+        width: 2px;
+        height: 0%;
+        background: var(--accent);
+        transform: translateX(-50%);
+        box-shadow: 0 0 15px var(--accent);
+        will-change: height;
+      }
+
+      .timeline-item {
+        position: relative;
+        width: 100%;
+        margin-bottom: 120px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .timeline-item:nth-child(even) {
+        flex-direction: row-reverse;
+      }
+      .timeline-dot {
+        position: absolute;
+        left: 50%;
+        width: 12px;
+        height: 12px;
+        background: #000;
+        border: 2px solid #333;
+        border-radius: 50%;
+        transform: translateX(-50%);
+        z-index: 10;
+        transition: 0.3s;
+      }
+      .timeline-item.active .timeline-dot {
+        border-color: var(--accent);
+        background: var(--accent);
+        box-shadow: 0 0 10px var(--accent);
+      }
+
+      .timeline-content {
+        width: 42%;
+        transition: 0.5s;
+      }
+      .timeline-date {
+        font-weight: 800;
+        font-size: 14px;
+        color: var(--accent);
+        display: block;
+        margin-bottom: 10px;
+        opacity: 0.3;
+        transition: 0.5s;
+      }
+      .timeline-item.active .timeline-date {
+        opacity: 1;
+      }
+      .timeline-content h3 {
+        font-size: 26px;
+        margin-bottom: 5px;
+        letter-spacing: -1px;
+      }
+      .timeline-content h4 {
+        font-size: 16px;
+        color: #888;
+        font-weight: 400;
+        margin-bottom: 15px;
+      }
+      .timeline-content p {
+        font-size: 16px;
+        color: #aaa;
+        line-height: 1.6;
+        font-weight: 300;
+      }
+
+      /* --- SKILLS --- */
+      .skills-wrapper {
+        margin-top: 150px;
+        border-top: 1px solid #1a1a1a;
+        padding-top: 80px;
+        max-width: 1200px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .skills-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 25px;
+        margin-top: 50px;
+        align-items: stretch;
+      }
+      .skill-card {
+        background: #0f0f0f;
+        border: 1px solid #1a1a1a;
+        padding: 35px;
+        border-radius: 24px;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        overflow: hidden;
+      }
+      .skill-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(
+          circle at top left,
+          rgba(212, 255, 63, 0.05),
+          transparent 70%
+        );
+        pointer-events: none;
+      }
+      .skill-card:hover {
+        border-color: var(--accent);
+        background: #141414;
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+      }
+      .skill-card h3 {
+        color: var(--accent);
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 30px;
+        font-weight: 800;
+      }
+      .icons-flex {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+      }
+      .icon-box {
+        text-align: center;
+        width: 65px;
+        transition: 0.3s;
+      }
+      .icon-box img {
+        width: 45px;
+        height: 45px;
+        object-fit: contain;
+        margin-bottom: 10px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .icon-box span {
+        display: block;
+        font-size: 10px;
+        color: #888;
+        text-transform: uppercase;
+        font-weight: 700;
+        letter-spacing: 1px;
+      }
+      /* Efeito Hover - Apenas adicionando ao que você já tem */
+      .icon-box:hover {
+        transform: translateY(-8px); /* Sobe levemente */
+      }
+
+      .icon-box:hover img {
+        filter: drop-shadow(
+          0 0 10px rgba(255, 255, 255, 0.3)
+        ); /* Brilho sutil no ícone */
+      }
+
+      .icon-box:hover span {
+        color: #fff; /* O texto fica branco puro ao passar o mouse */
+      }
+      /* PROJECTS */
+      .section-projects {
+        padding: 150px 5%;
+        background-color: var(--bg-dark); /* Inicia preto */
+        transition: background-color 0.6s ease;
+        position: relative;
+        z-index: 60;
+      }
+
+      /* Container de filtros com scroll horizontal no mobile */
+      .project-filters-container {
+        width: 100%;
+        overflow-x: auto;
+        display: flex;
+        justify-content: center;
+        margin-bottom: 60px;
+        scrollbar-width: none;
+      }
+      .project-filters-container::-webkit-scrollbar {
+        display: none;
+      }
+
+      .project-filters {
+        display: flex;
+        gap: 15px;
+        padding: 0 20px;
+      }
+
+      .filter-btn {
+        background: transparent;
+        border: 1px solid #333;
+        color: #888;
+        padding: 12px 30px;
+        border-radius: 50px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: 0.3s;
+        white-space: nowrap;
+      }
+
+      .filter-btn.active {
+        background: var(--accent);
+        color: #000;
+        border-color: var(--accent);
+      }
+
+      /* Grid de 3 colunas fixas */
+      .projects-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .project-card {
+        background: #0a0a0a;
+        border-radius: 24px;
+        overflow: hidden;
+        border: 1px solid #1a1a1a;
+        transition: transform 0.4s ease, background 0.4s ease;
+      }
+
+      .project-img {
+        position: relative;
+        height: 250px;
+        overflow: hidden;
+      }
+
+      .project-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .project-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(212, 255, 63, 0.95);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        transition: 0.4s;
+        text-decoration: none;
+      }
+
+      .project-card:hover .project-overlay {
+        opacity: 1;
+      }
+      .project-overlay span {
+        color: #000;
+        font-weight: 800;
+      }
+
+      .project-info {
+        padding: 30px;
+      }
+      .proj-category-label {
+        color: var(--accent);
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+      }
+      .project-info h3 {
+        margin: 10px 0;
+        font-size: 24px;
+        color: #fff;
+      }
+      .project-info p {
+        color: #888;
+        font-size: 15px;
+      }
+
+      /* Mudança de Tema (Light Mode) via GSAP */
+      .section-projects.light-theme {
+        background-color: #f5f5f5; /* Cor do fundo claro */
+      }
+      .section-projects.light-theme .proj-title {
+        color: #000;
+      }
+      .section-projects.light-theme .project-card {
+        background: #fff;
+        border-color: #ddd;
+      }
+      .section-projects.light-theme .project-info h3 {
+        color: #000;
+      }
+      .section-projects.light-theme .project-info p {
+        color: #555;
+      }
+      .section-projects.light-theme .filter-btn {
+        border-color: #ccc;
+      }
+      /* 3d */
+
+      .section-3d-showcase {
+        position: relative;
+        width: 100%;
+        height: 100vh; /* Seção inicial */
+        background-color: #000;
+        overflow: hidden;
+      }
+      /* Garante que o container tenha espaço para o movimento vertical */
+      #canvas-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        z-index: 20; /* Começa na frente de tudo */
+        pointer-events: none; /* Mouse passa para as letras */
+      }
+      .showcase-content {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh; /* Ocupa a tela toda */
+        display: flex; /* Ativa o flexbox */
+        flex-direction: column; /* Texto e parágrafo um embaixo do outro */
+        justify-content: center; /* Centraliza verticalmente */
+        align-items: center; /* Centraliza horizontalmente */
+        z-index: 10;
+        pointer-events: none;
+      }
+
+      .sticky-3d-text {
+        pointer-events: auto; /* Permite o hover nas letras */
+        text-align: center;
+      }
+
+      .sticky-3d-text h2 {
+        font-size: clamp(2rem, 8vw, 6rem); /* Responsivo */
+        color: var(--accent);
+        text-transform: uppercase;
+        font-weight: 800;
+        margin: 0;
+        white-space: nowrap;
+      }
+
+      .sticky-3d-text p {
+        font-size: clamp(0.9rem, 2vw, 1.2rem);
+        color: #fff;
+        opacity: 0.7;
+      }
+
+      .hover-reveal span {
+        display: inline-block;
+        will-change: transform;
+      }
+
+      /* FOOTER */
+      /* FOOteR */
+      :root {
+        --bg-footer: #000;
+        --text-stroke: #fff;
+      }
+
+      .footer-container {
+        background-color: var(--bg-footer);
+        min-height: 80vh;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 80px 0 40px 0;
+        font-family: "Inter", sans-serif;
+        cursor: none; /* Esconde o mouse padrão para o efeito brilhar */
+      }
+
+      /* --- NOVO CURSOR EM RASTRO (Diferenciado) --- */
+      .trail-dot {
+        position: fixed;
+        width: 40px; /* Tamanho inicial da bolinha */
+        height: 40px;
+        background-color: #fff;
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 999;
+        mix-blend-mode: difference;
+        transform: translate(-50%, -50%);
+        /* Animação para diminuir e sumir */
+        animation: vanish 0.6s ease-out forwards;
+      }
+
+      @keyframes vanish {
+        from {
+          transform: translate(-50%, -50%) scale(1);
+          opacity: 1;
+        }
+        to {
+          transform: translate(-50%, -50%) scale(0);
+          opacity: 0;
+        }
+      }
+
+      @media (hover: none) {
+        .footer-container {
+          cursor: auto;
+        }
+        .trail-dot {
+          display: none;
+        }
+      }
+
+      /* --- LINKS E BOXES (MANTIDOS) --- */
+      .footer-top {
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+        padding: 0 5%;
+        z-index: 10;
+      }
+
+      .links-redes {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        width: 100%;
+      }
+
+      .social-box {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 20px;
+        border-radius: 15px;
+        text-decoration: none;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+
+      .social-box i {
+        font-size: 2rem;
+      }
+      .box-text {
+        display: flex;
+        flex-direction: column;
+      }
+      .box-text span {
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+      .box-text small {
+        opacity: 0.5;
+        font-size: 0.8rem;
+      }
+
+      .social-box:hover {
+        background: #fff;
+        color: #000;
+        transform: translateY(-10px);
+      }
+
+      .handle-tag {
+        color: #fff;
+        font-family: monospace;
+        font-size: 1.1rem;
+        letter-spacing: 4px;
+        opacity: 0.4;
+      }
+
+      /* --- MARQUEE (MANTIDO) --- */
+      .marquee-wrapper {
+        display: flex;
+        overflow: hidden;
+        width: 100%;
+        pointer-events: none;
+      }
+
+      .marquee-content {
+        display: flex;
+        animation: scroll 25s linear infinite;
+        will-change: transform;
+      }
+
+      .marquee-content h1 {
+        font-size: 18vw;
+        font-weight: 900;
+        color: transparent;
+        -webkit-text-stroke: 1.5px var(--text-stroke);
+        white-space: nowrap;
+        padding-right: 50px;
+        line-height: 1;
+      }
+
+      @keyframes scroll {
+        from {
+          transform: translateX(0);
+        }
+        to {
+          transform: translateX(-50%);
+        }
+      }
+
+      /* --- RESPONSIVIDADE AJUSTADA --- */
+      @media (max-width: 768px) {
+        .footer-container {
+          padding: 60px 0 20px 0;
+          min-height: auto; /* Permite que o footer cresça se as caixas empilharem */
+        }
+
+        .footer-top {
+          align-items: stretch; /* Faz as caixas ocuparem a largura total */
+          text-align: left;
+          gap: 25px;
+        }
+
+        .links-redes {
+          /* No celular, mudamos para 1 coluna para não amassar o texto */
+          grid-template-columns: 1fr;
+          gap: 12px;
+        }
+
+        .social-box {
+          padding: 15px;
+          gap: 12px;
+        }
+
+        .social-box i {
+          font-size: 1.5rem; /* Ícone um pouco menor para caber melhor */
+        }
+
+        .marquee-content h1 {
+          font-size: 25vw;
+        }
+
+        .handle-tag {
+          text-align: center;
+          font-size: 0.9rem;
+          margin-top: 15px;
+        }
+      }
+      /* Responsividade */
+      @media (max-width: 1000px) {
+        .projects-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+      @media (max-width: 700px) {
+        .projects-grid {
+          grid-template-columns: 1fr;
+        }
+        .project-filters-container {
+          justify-content: flex-start;
+        }
+      }
+      /* --- FIXOS --- */
+      .social-sidebar {
+        position: fixed;
+        left: 60px;
+        bottom: 50px;
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+        z-index: 100;
+      }
+      .social-sidebar svg {
+        width: 18px;
+        fill: currentColor;
+      }
+      .vertical-name {
+        position: fixed;
+        right: -75px;
+        top: 50%;
+        transform: rotate(90deg);
+        font-size: 11px;
+        letter-spacing: 5px;
+        opacity: 0.4;
+        z-index: 100;
+        text-transform: uppercase;
+      }
+
+      /* --- MOBILE --- */
+      @media (max-width: 900px) {
+        nav {
+          padding: 30px;
+        }
+        .nav-links,
+        .social-sidebar,
+        .vertical-name {
+          display: none;
+        }
+        .burger {
+          display: flex;
+        }
+        .me-container {
+          flex-direction: column;
+          gap: 40px;
+        }
+        .section-about {
+          border-radius: 60px;
+          transform: scale(0.8);
+        }
+        .timeline-line-base,
+        .timeline-line-progress,
+        .timeline-dot {
+          left: 20px;
+        }
+        .timeline-item,
+        .timeline-item:nth-child(even) {
+          flex-direction: row;
+          padding-left: 50px;
+        }
+        .timeline-content {
+          width: 100%;
+        }
+        .me-photo {
+          width: 100%;
+          padding-left: 0px;
+        }
+      }
+    </style>
   </head>
-  <body>
-    <header>
-      <section>
-        <div class="logo">
-          <img src="./assets/logo_victor-removebg-preview.png" alt="" />
-        </div>
-        <nav class="navbar">
-          <ul class="nav-list">
-            <li class="navbar-list"><a href="#home">Home</a></li>
-            <li class="navbar-list"><a href="#about">Sobre mim</a></li>
-            <li class="navbar-list"><a href="#projects">Projetos</a></li>
-            <li class="navbar-list"><a href="#forMe">Contato</a></li>
-          </ul>
-        </nav>
-        <button onclick="menuMobile()">
-          <img class="menu-icon" src="./assets/icons8-cardápio-50.png" alt="" />
-        </button>
-      </section>
-      <div class="navbar-mobile">
-        <ul class="mobile-menu">
-          <li class="mobile"><a href="#home">Home</a></li>
-          <li class="mobile"><a href="#about">Sobre mim</a></li>
-          <li class="mobile"><a href="#projects">Projetos</a></li>
-          <li class="mobile"><a href="#forMe">Contato</a></li>
-        </ul>
+  <body oncontextmenu="return false;">
+    <nav>
+      <div class="logo">VP</div>
+      <div class="nav-links">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#career">Career</a>
+        <a href="#contato">Contact</a>
       </div>
-    </header>
+      <div class="burger" id="burger-menu">
+        <span></span><span style="margin: 5px 0"></span><span></span>
+      </div>
+    </nav>
 
-    <section id="home">
-      <img class="victor" src="./assets/homeVictor.png" alt="" />
-      <div class="homeDesktop">
-        <p class="title">I’m software engineer and front-end developer</p>
-        <p class="text">
-          Meu nome é Victor de Oliveira Pereira. <br />
-          Sou desenvolvedor front-end e apaixonado por tecnologia.
+    <div class="menu-overlay" id="menu-overlay">
+      <a href="#home">Home</a>
+      <a href="#about">About</a>
+      <a href="#career">Career</a>
+      <a href="#contato">Contact</a>
+    </div>
+
+    <div class="vertical-name">Victor Pereira Developer</div>
+    <div class="social-sidebar">
+      <a
+        href="https://www.linkedin.com/in/victor-de-oliveira-pereira/"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <path
+            d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"
+          />
+        </svg>
+      </a>
+
+      <a
+        href="https://github.com/seunome"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <path
+            d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
+          />
+        </svg>
+      </a>
+    </div>
+
+    <section id="home" class="section-hero">
+      <div class="video-wrapper" id="video-follow">
+        <video autoplay loop muted playsinline disablePictureInPicture>
+          <source src="assets/glassyObj.3c74f580 (1).mp4" type="video/mp4" />
+        </video>
+      </div>
+      <div class="hero-content">
+        <h2>Hi! I'm Victor Pereira</h2>
+        <h1>Web Developer<br />Front-end Developer.</h1>
+      </div>
+    </section>
+
+    <section class="section-about">
+      <div class="about-content">
+        <h2>Desenvolvendo o futuro digital com elegância e performance.</h2>
+        <p>
+          Especialista em criar produtos digitais que resolvem problemas e
+          encantam usuários.
         </p>
-        <a href="#forMe"> <button class="button">Send Hi!</button></a>
-        <div class="homeIcons">
-          <a href="https://www.instagram.com/victor_ofc019/" target="_blank">
-            <img src="./assets/insta.png" alt="logo do instagram"
-          /></a>
+        <a href="#about" class="btn-about">About me ↗</a>
+      </div>
+    </section>
+
+    <section id="about" class="section-me">
+      <div class="me-container">
+        <div class="me-photo-wrapper">
+          <div class="me-photo">
+            <img src="/assets/1º.jpg" alt="Victor Pereira" />
+          </div>
+        </div>
+        <div class="me-content">
+          <span class="me-subtitle">Sobre Mim</span>
+          <div class="me-text-block">
+            <p>
+              Sou o <strong>Victor</strong>, desenvolvedor Front-end de 20 anos
+              e estudante de Engenharia de Software. Trabalho criando sites
+              modernos, rápidos e funcionais utilizando
+              <strong>HTML, CSS, JavaScript, PHP, WordPress, React</strong> e
+              princípios de UX/UI.
+            </p>
+
+            <p>
+              Entrego projetos completos: do design à implementação, otimização,
+              hospedagem e manutenção profissional. Sigo evoluindo para criar
+              soluções eficientes, atraentes e preparadas para qualquer desafio
+              digital.
+            </p>
+
+            <p>
+              Além da tecnologia, sou músico e toco
+              <strong>violão, guitarra, teclado, baixo, bateria e canto</strong
+              >. Já tive o privilégio de me apresentar na Marcha para Jesus, uma
+              das experiências mais marcantes da minha vida.
+            </p>
+            <a href="seu-curriculo.pdf" class="btn-cv" id="cv-trigger" download
+              >Baixar currículo</a
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="career" class="section-career">
+      <div class="career-header">
+        <span>Trajetória Profissional</span>
+        <h2>Minha Carreira</h2>
+      </div>
+
+      <div class="timeline-container">
+        <div class="timeline-line-base"></div>
+        <div class="timeline-line-progress"></div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <span class="timeline-date">FEVEREIRO 2025 — ATUAL</span>
+            <h3>ZAON</h3>
+            <h4>Full-stack Developer</h4>
+            <p>
+              Monitorando hospedagens, Interfaces imersivas, projetos 3D
+              interativos e projetos internacionais.
+            </p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <span class="timeline-date">2024 — ATUAL</span>
+            <h3>Freelancer</h3>
+            <h4>Web Developer</h4>
+            <p>
+              Landing Pages, Sites intitucionais e E-commerces estratégicos.
+            </p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <span class="timeline-date">PASSAGEM ANTERIOR</span>
+            <h3>Salles Publicidade</h3>
+            <h4>Web Designer & WordPress</h4>
+            <p>Gerenciamento de hospedagens e customização de lojas.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="skills-wrapper">
+        <div
+          class="career-header"
+          style="text-align: left; margin-bottom: 40px"
+        >
+          <span>Expertise</span>
+          <h2>Tecnologias</h2>
+        </div>
+        <div class="skills-grid">
+          <div class="skill-card">
+            <h3>Desenvolvimento Web</h3>
+            <div class="icons-flex">
+              <div class="icon-box">
+                <img
+                  src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg"
+                /><span>HTML5</span>
+              </div>
+              <div class="icon-box">
+                <img
+                  src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg"
+                /><span>CSS3</span>
+              </div>
+              <div class="icon-box">
+                <img
+                  src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
+                /><span>JS</span>
+              </div>
+              <div class="icon-box">
+                <img
+                  src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/wordpress/wordpress-plain.svg"
+                /><span>WP</span>
+              </div>
+              <div class="icon-box">
+                <img
+                  src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg"
+                />
+                <span>React</span>
+              </div>
+
+              <div class="icon-box">
+                <img
+                  src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg"
+                />
+                <span>TS</span>
+              </div>
+
+              <div class="icon-box">
+                <img
+                  src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg"
+                />
+                <span>NodeJS</span>
+              </div>
+
+              <div class="icon-box">
+                <img
+                  src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/threejs/threejs-original.svg"
+                />
+                <span>ThreeJS</span>
+              </div>
+
+              <div class="icon-box">
+                <img src="https://cdn.simpleicons.org/gsap" />
+                <span>GSAP</span>
+              </div>
+
+              <div class="icon-box">
+                <img
+                  src="https://hiukim.github.io/mind-ar-js-doc/img/logo.png"
+                />
+                <span>MindJS</span>
+              </div>
+            </div>
+          </div>
+          <div class="skill-card">
+            <h3>Design</h3>
+            <div class="icons-flex">
+              <div class="icon-box">
+                <img
+                  src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg"
+                /><span>Figma</span>
+              </div>
+              <div class="icon-box">
+                <img
+                  src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/photoshop/photoshop-original.svg"
+                />
+                <span>PS</span>
+              </div>
+              <div class="icon-box">
+                <img
+                  src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/aftereffects/aftereffects-original.svg"
+                /><span>AE</span>
+              </div>
+              <div class="icon-box">
+                <img
+                  src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/premierepro/premierepro-original.svg"
+                />
+                <span>PR</span>
+              </div>
+
+              <div class="icon-box">
+                <img
+                  src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/illustrator/illustrator-original.svg"
+                />
+
+                <span>AI</span>
+              </div>
+
+              <div class="icon-box">
+                <img
+                  src="https://banner2.cleanpng.com/20190316/qxl/kisspng-office-365-microsoft-office-2-13-microsoft-corpora-microsoft-office-professional-plus-version-1812-b-5c8c94a4e3bac8.7751607915527169649328.jpg"
+                />
+
+                <span>Office</span>
+              </div>
+            </div>
+          </div>
+          <div class="skill-card">
+            <h3>Infraestrutura</h3>
+            <div class="icons-flex">
+              <div class="icon-box">
+                <img
+                  src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cpanel/cpanel-original.svg"
+                /><span>cPanel</span>
+              </div>
+              <div class="icon-box">
+                <img
+                  src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg"
+                /><span>Linux</span>
+              </div>
+              <div class="icon-box">
+                <img
+                  src="https://www.vectorlogo.zone/logos/hostgator/hostgator-icon.svg"
+                />
+                <span>Gator</span>
+              </div>
+
+              <div class="icon-box">
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/a/a2/FTP_LOGO.png"
+                />
+                <span>FTP</span>
+              </div>
+
+              <div class="icon-box">
+                <img
+                  src="https://user-images.githubusercontent.com/13507838/87209587-cd40d200-c2e8-11ea-8158-4820453a85cb.png"
+                />
+                <span>WHM</span>
+              </div>
+            </div>
+          </div>
+          <div class="skill-card">
+            <h3>3D & Futuro</h3>
+            <div class="icons-flex">
+              <div class="icon-box">
+                <img
+                  src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/blender/blender-original.svg"
+                /><span>Blender</span>
+              </div>
+              <div class="icon-box">
+                <img
+                  src="https://media.licdn.com/dms/image/v2/C4E0BAQGniDh9zBZm5Q/company-logo_200_200/company-logo_200_200/0/1646959598139/splinetool_logo?e=1769040000&v=beta&t=YU855b5BViOpYWXlE-943CwqSbtyUpQk3CzpXqHtg8w"
+                /><span>Spline</span>
+              </div>
+              <div class="icon-box">
+                <img
+                  src="https://cdn-1.webcatalog.io/catalog/mywebar/mywebar-icon-filled-256.webp?v=1714783099325"
+                />
+                <span>AR-VR</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!--
+    <section class="section-projects" id="projects-section">
+      <div class="career-header">
+        <span class="proj-subtitle">Portfolio</span>
+        <h2 class="proj-title">Projetos Selecionados</h2>
+      </div>
+
+      <div class="project-filters-container">
+        <div class="project-filters">
+          <button class="filter-btn active" data-filter="all">Todos</button>
+          <button class="filter-btn" data-filter="react">React</button>
+          <button class="filter-btn" data-filter="html">HTML/JS</button>
+          <button class="filter-btn" data-filter="wordpress">WordPress</button>
+        </div>
+      </div>
+
+      <div class="projects-grid">
+        <div class="project-card" data-category="react">
+          <div class="project-img">
+            <img src="https://via.placeholder.com/600x400" alt="Projeto" />
+            <a href="#" target="_blank" class="project-overlay">
+              <span>Ver Projeto ↗</span>
+            </a>
+          </div>
+          <div class="project-info">
+            <span class="proj-category-label">React</span>
+            <h3>Nome do Projeto</h3>
+            <p>Descrição curta do seu projeto de tecnologia.</p>
+          </div>
+        </div>
+      </div>
+    </section>-->
+    <section class="section-3d-showcase" id="showcase-section">
+      <div id="canvas-container"></div>
+      <div class="showcase-content">
+        <div class="sticky-3d-text">
+          <h2 class="hover-reveal">Design Imersivo</h2>
+          <p>Onde a tecnologia encontra a arte visual.</p>
+        </div>
+      </div>
+    </section>
+    <footer class="footer-container" id="contato">
+      <div id="trail-container"></div>
+      <div class="footer-top">
+        <div class="links-redes">
           <a
             href="https://www.linkedin.com/in/victor-de-oliveira-pereira/"
-            target="_blank"
+            class="social-box"
           >
-            <img src="./assets/linkedin.png" alt="logo do linkedin"
-          /></a>
-          <a href="https://github.com/victorpereira12" target="_blank"
-            ><img src="./assets/git.png" alt="logo do github"
-          /></a>
-          <a href="https://wa.me/qr/6WWSF6EETINTJ1" target="_blank">
-            <img src="./assets/wpp.png" alt="logo WhatsApp"
-          /></a>
+            <i class="bx bxl-linkedin"></i>
+            <div class="box-text">
+              <span>LinkedIn</span>
+              <small>Victor Pereira</small>
+            </div>
+          </a>
+          <a
+            href="https://www.instagram.com/_victorpereira05/"
+            class="social-box"
+          >
+            <i class="bx bxl-instagram"></i>
+            <div class="box-text">
+              <span>Instagram</span>
+              <small>@_victorpereira05</small>
+            </div>
+          </a>
+          <a
+            href="https://wa.me/5519982593418?text=Olá%20Victor,%20gostaria%20de%20falar%20com%20você%20sobre%20o%20desenvolvimento%20de%20um%20projeto."
+            class="social-box"
+          >
+            <i class="bx bxl-whatsapp"></i>
+            <div class="box-text">
+              <span>WhatsApp</span>
+              <small>Contato Direto</small>
+            </div>
+          </a>
+
+          <a href="mailto:victor386pereira@gmail.com" class="social-box">
+            <i class="bx bx-envelope"></i>
+            <div class="box-text">
+              <span>Email</span>
+              <small>victor386pereira@gmail.com</small>
+            </div>
+          </a>
+        </div>
+
+        <div class="handle-tag">feito com amor por Victor Pereira</div>
+      </div>
+
+      <div class="marquee-wrapper">
+        <div class="marquee-content">
+          <h1>VICTOR PEREIRA — VICTOR PEREIRA — VICTOR PEREIRA —</h1>
+          <h1>VICTOR PEREIRA — VICTOR PEREIRA — VICTOR PEREIRA —</h1>
         </div>
       </div>
-    </section>
-    <section id="about">
-      <p class="title">About me</p>
-      <div class="aboutDesktop">
-        <img class="aboutImg" src="./assets/about.png" alt="" />
-        <div class="aboutResume">
-          <p class="subTitle">Resume</p>
-          <p class="text">
-            Sou Victor, nascido em 25 de outubro de 2005, e sou um profissional
-            proativo e dedicado ao desenvolvimento front-end. Formado em Técnico
-            em Eletromecânica pelo Senai e cursando Engenharia de Software na
-            Wyden Unimetrocamp, destaco-me pela minha capacidade de aprender
-            rapidamente e pela busca constante por inovação e excelência em
-            projetos desafiadores.
-          </p>
-          <p class="subTitle">Hobby</p>
-          <p class="text">
-            Eu amo tocar instrumentos e tenho conhecimento em violão, guitarra,
-            teclado, baixo, bateria e canto. Tive o privilégio de participar da
-            Marcha para Jesus, o que foi uma experiência inesquecível para mim!
-          </p>
-        </div>
-        <a
-          class="aboutButton"
-          href="https://drive.google.com/file/d/1RQCiRGfW473Qr2SUtoKwsJVG8pksntHb/view?usp=sharing"
-          target="_blank"
-        >
-          <button class="button">Download Curricle</button></a
-        >
-      </div>
-    </section>
-    <section id="projects">
-      <p class="title">projects</p>
-      <div class="projectsDesktop">
-        <div class="projectsContainer">
-          <img src="./assets/gerador.png" alt="" />
-          <p class="subTitle">Gerador de senha</p>
-          <p class="text">Gerar uma senha aleatória de 5 à 30 caracteres</p>
-          <a
-            href="https://victorpereira12.github.io/Gerador-de-senha/"
-            target="_blank"
-            >Ver Site</a
-          >
-        </div>
-        <div class="projectsContainer">
-          <img src="./assets/previsão.png" alt="" />
-          <p class="subTitle">Previsão do tempo</p>
-          <p class="text">
-            Mostrar a previsão do tempo de qualquer local do mundo
-          </p>
-          <a
-            href="https://victorpereira12.github.io/PREVISAO-DO-TEMPO/"
-            target="_blank"
-            >Ver Site</a
-          >
-        </div>
-        <div class="projectsContainer">
-          <img src="./assets/cafe.png" alt="" />
-          <p class="subTitle">Landing Page Cafeteria</p>
-          <p class="text">
-            Uma landing page de uma cafeteria com menu, comentarios, local, e
-            etc..
-          </p>
-          <a href="https://victorpereira12.github.io/Site-Caf-/" target="_blank"
-            >Ver Site</a
-          >
-        </div>
-        <div class="projectsContainer">
-          <img src="./assets/nlw.png" alt="" />
-          <p class="subTitle">Site de viagens</p>
-          <p class="text">
-            Site para adicionar e marcar eventos com data e hora.
-          </p>
-          <a
-            href="https://victorpereira12.github.io/NLW-Journey/"
-            target="_blank"
-            >Ver Site</a
-          >
-        </div>
-        <div class="projectsContainer">
-          <img src="./assets/cat.png" alt="" />
-          <p class="subTitle">Adoção de gatos</p>
-          <p class="text">Site de uma instituição de adoção de gatos.</p>
-          <a href="https://victorpereira12.github.io/Ong-Tinie-Birds-Cats/"
-            >Ver Site</a
-          >
-        </div>
-        <div class="projectsContainer">
-          <img src="./assets/clinica.png" alt="" />
-          <p class="subTitle">Cliníca Veterinária</p>
-          <p class="text">Site para uma clinica Veterinária.</p>
-          <a
-            href="https://victorpereira12.github.io/Clinica-Veterin-ria/"
-            target="_blank"
-            >Ver Site</a
-          >
-        </div>
-        <div class="projectsContainer">
-          <img src="./assets/barbearia.png" alt="" />
-          <p class="subTitle">Barbearia</p>
-          <p class="text">
-            Site para uma barbearia, onde contém o catálogo e agendamento.
-          </p>
-          <a href="https://dev-testevictor123.pantheonsite.io/" target="_blank"
-            >Ver Site</a
-          >
-        </div>
-        <div class="projectsContainer">
-          <img src="./assets/naBoca.png" alt="" />
-          <p class="subTitle">Blog</p>
-          <p class="text">Blog de notícias do mundo dos famosos.</p>
-          <a href="https://sandralourencoimoveis.com.br/" target="_blank"
-            >Ver Site</a
-          >
-        </div>
-      </div>
-    </section>
-    <section id="forMe">
-      <p class="title">Fale comigo</p>
-      <div class="forMeDesktop">
-        <div class="formeInfos">
-          <a
-            href="https://www.instagram.com/victor_ofc019/"
-            target="_blank"
-            class="forMesubTitle"
-            ><img src="./assets/insta.png" alt="" />
-            <p class="forMesubTitle">Instagram</p>
-            <p class="forMetext">@_victorpereira05</p>
-            Fale Comigo -></a
-          >
-        </div>
-        <div class="formeInfos">
-          <a
-            href="https://www.linkedin.com/in/victor-de-oliveira-pereira/"
-            target="_blank"
-            class="forMesubTitle"
-            ><img src="./assets/linkedin.png" alt="" />
-            <p class="forMesubTitle">Linkedin</p>
-            <p class="forMetext">Victor de Oliveira Pereira</p>
-            Fale Comigo -></a
-          >
-        </div>
-        <div class="formeInfos">
-          <a href="#home" class="forMesubTitle">
-            <img src="./assets/email.png" alt="" />
-            <p class="forMesubTitle">Email</p>
-            <p class="forMetext">victor386pereira@gmail.com</p>
-            Fale Comigo -></a
-          >
-        </div>
-      </div>
-    </section>
-    <footer>
-      <img
-        src="./assets/logo_victor-removebg-preview.png"
-        alt="logo de Victor"
-      />
-      <p class="footerText">
-        © Victor de Oliveira Pereira. Todos os direitos reservados
-      </p>
     </footer>
+    <script>
+      gsap.registerPlugin(ScrollTrigger);
+
+      window.addEventListener("mousemove", (e) => {
+        const xPos = (e.clientX / window.innerWidth - 0.5) * 50;
+        const yPos = (e.clientY / window.innerHeight - 0.5) * 50;
+        gsap.to("#video-follow", {
+          x: xPos,
+          y: yPos,
+          duration: 1.2,
+          ease: "power2.out",
+        });
+      });
+
+      ScrollTrigger.create({
+        trigger: ".section-about",
+        start: "top 45%",
+        onEnter: () => {
+          gsap.to(["nav", ".social-sidebar", ".vertical-name"], {
+            color: "white",
+            duration: 0.3,
+          });
+          gsap.to(".social-sidebar svg", { fill: "white", duration: 0.3 });
+        },
+        onLeaveBack: () => {
+          gsap.to(["nav", ".social-sidebar", ".vertical-name"], {
+            color: "#1a1a1a",
+            duration: 0.3,
+          });
+          gsap.to(".social-sidebar svg", { fill: "#1a1a1a", duration: 0.3 });
+        },
+      });
+
+      gsap.to(".section-about", {
+        borderRadius: "0px",
+        scale: 1,
+        scrollTrigger: {
+          trigger: ".section-about",
+          start: "top 98%",
+          end: "top 25%",
+          scrub: 1.5,
+        },
+      });
+
+      // Remove o 'if' antigo e usa o matchMedia do GSAP
+      let mm = gsap.matchMedia();
+
+      mm.add("(min-width: 901px)", () => {
+        // Esse código roda APENAS no Desktop
+        ScrollTrigger.create({
+          trigger: ".me-photo",
+          start: "top 120px",
+          // O 'endTrigger' agora é o container do texto completo
+          endTrigger: ".me-content",
+          // O 'end' diz: pare quando a base da foto atingir a base do texto
+          end: "bottom bottom",
+          pin: true,
+          pinSpacing: false,
+          invalidateOnRefresh: true,
+        });
+      });
+
+      const burger = document.getElementById("burger-menu");
+      const overlay = document.getElementById("menu-overlay");
+      burger.addEventListener("click", () => {
+        overlay.classList.toggle("active");
+        if (overlay.classList.contains("active")) {
+          gsap.to(".menu-overlay a", {
+            opacity: 1,
+            x: 0,
+            stagger: 0.1,
+            duration: 0.5,
+          });
+        }
+      });
+
+      gsap.to(".timeline-line-progress", {
+        height: "100%",
+        scrollTrigger: {
+          trigger: ".timeline-container",
+          start: "top 20%",
+          end: "bottom 70%",
+          scrub: 1,
+        },
+      });
+
+      const items = document.querySelectorAll(".timeline-item");
+      items.forEach((item) => {
+        const content = item.querySelector(".timeline-content");
+        ScrollTrigger.create({
+          trigger: item,
+          start: "top 65%",
+          onEnter: () => item.classList.add("active"),
+          onLeaveBack: () => item.classList.remove("active"),
+        });
+        gsap.from(content, {
+          y: 80,
+          opacity: 0,
+          duration: 1.2,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: item,
+            start: "top 95%",
+            toggleActions: "restart none restart none",
+          },
+        });
+      });
+
+      gsap.from(".skill-card", {
+        y: 40,
+        opacity: 0,
+        duration: 0.8,
+        stagger: 0.1,
+        ease: "expo.out",
+        scrollTrigger: {
+          trigger: ".skills-grid",
+          start: "top 85%",
+          toggleActions: "play none none none",
+        },
+        onComplete: function () {
+          gsap.set(".skill-card", { clearProps: "all" });
+        },
+      });
+      // Lógica de Filtragem de Projetos
+      // 1. Efeito de Troca de Cor da Tela (Dark -> Light)
+      ScrollTrigger.create({
+        trigger: "#projects-section",
+        start: "top 20%",
+        end: "bottom 20%",
+        onEnter: () => {
+          document
+            .getElementById("projects-section")
+            .classList.add("light-theme");
+          gsap.to(["nav", ".social-sidebar", ".vertical-name"], {
+            color: "#000",
+            duration: 0.4,
+          });
+          gsap.to(".social-sidebar svg", { fill: "#000", duration: 0.4 });
+        },
+        onLeaveBack: () => {
+          document
+            .getElementById("projects-section")
+            .classList.remove("light-theme");
+          gsap.to(["nav", ".social-sidebar", ".vertical-name"], {
+            color: "#fff",
+            duration: 0.4,
+          });
+          gsap.to(".social-sidebar svg", { fill: "#fff", duration: 0.4 });
+        },
+      });
+
+      // 2. Lógica de Filtragem
+      const filterBtns = document.querySelectorAll(".filter-btn");
+      const projectCards = document.querySelectorAll(".project-card");
+
+      filterBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          filterBtns.forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+
+          const filter = btn.getAttribute("data-filter");
+
+          gsap.to(projectCards, {
+            opacity: 0,
+            y: 20,
+            duration: 0.3,
+            onComplete: () => {
+              projectCards.forEach((card) => {
+                if (
+                  filter === "all" ||
+                  card.getAttribute("data-category") === filter
+                ) {
+                  card.style.display = "block";
+                } else {
+                  card.style.display = "none";
+                }
+              });
+              gsap.to(".project-card[style*='display: block']", {
+                opacity: 1,
+                y: 0,
+                duration: 0.4,
+                stagger: 0.1,
+              });
+            },
+          });
+        });
+      });
+      // --- CONFIGURAÇÃO THREE.JS ---
+      // --- CONFIGURAÇÃO THREE.JS (VERSÃO FINAL CONSOLIDADA) ---
+
+      // 1. Definições de Cena, Câmera e Renderer
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(
+        75,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        1000
+      );
+      camera.position.set(0, 0, 4); // Câmera fixa para observar o movimento vertical do carro
+
+      const renderer = new THREE.WebGLRenderer({
+        antialias: true,
+        alpha: true,
+        powerPreference: "high-performance",
+      });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.outputEncoding = THREE.sRGBEncoding;
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1.5;
+
+      document
+        .getElementById("canvas-container")
+        .appendChild(renderer.domElement);
+
+      // 2. Iluminação
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+      scene.add(ambientLight);
+
+      const mainLight = new THREE.DirectionalLight(0xffffff, 1.5);
+      mainLight.position.set(5, 10, 7.5);
+      scene.add(mainLight);
+
+      const accentLight = new THREE.PointLight(0xffffff, 1);
+      accentLight.position.set(0, 2, 2);
+      scene.add(accentLight);
+
+      // 3. Carregamento do Modelo e Animações
+      let civic;
+      const loader = new THREE.GLTFLoader();
+
+      loader.load(
+        "./assets/victor-3d.glb",
+        (gltf) => {
+          civic = gltf.scene;
+
+          // Centralização exata do modelo (ajuste de pivô)
+          const box = new THREE.Box3().setFromObject(civic);
+          const center = box.getCenter(new THREE.Vector3());
+          civic.position.sub(center);
+          // --- CONFIGURAÇÃO DE ESCALA ---
+          // Se quiser mudar o tamanho no mobile, mude o 12 (Mobile) ou o 5 (Desktop)
+          const isMobile = window.innerWidth < 768;
+          const initialScale = isMobile ? 2 : 5;
+
+          civic.scale.set(initialScale, initialScale, initialScale);
+          // ------------------------------
+
+          // POSIÇÃO INICIAL: O carro começa no topo (atropelando a visão inicial)
+          civic.position.y = 2;
+
+          scene.add(civic);
+          console.log("3D Carregado com Sucesso!");
+
+          // --- TIMELINE DE SCROLL (PIN + MOVIMENTO VERTICAL + TEXTO) ---
+          const tl = gsap.timeline({
+            scrollTrigger: {
+              trigger: "#showcase-section",
+              start: "top top",
+              end: "+=300%", // Duração do scroll para suavidade
+              pin: true, // Trava a tela
+              scrub: 1, // Sincroniza com a rolagem do mouse
+            },
+          });
+
+          // Passo 1: O carro desce do topo para o fundo e gira
+          tl.to(
+            civic.position,
+            {
+              y: -2, // Termina na parte de baixo
+              ease: "none",
+            },
+            0
+          );
+
+          tl.to(
+            civic.rotation,
+            {
+              y: Math.PI * 2, // Uma volta completa
+              ease: "none",
+            },
+            0
+          );
+
+          // Passo 2: O carro aumenta de tamanho durante a descida (efeito zoom)
+          tl.to(
+            civic.scale,
+            {
+              x: initialScale * 1.4,
+              y: initialScale * 1.4,
+              z: initialScale * 1.4,
+              ease: "none",
+            },
+            0
+          );
+
+          // Passo 3: O texto aparece exatamente quando o carro está passando por ele
+          tl.from(
+            ".sticky-3d-text",
+            {
+              opacity: 0,
+              scale: 0.6,
+              y: 30,
+              duration: 0.5,
+            },
+            0.2
+          ); // Inicia aos 20% do progresso do scroll
+
+          tl.to(
+            ".sticky-3d-text",
+            {
+              opacity: 1,
+              scale: 1.2,
+              duration: 0.5,
+            },
+            0.5
+          ); // Fica totalmente visível no meio do scroll
+
+          // Inicializa a interação de hover nas letras
+          initInteractiveLetters();
+        },
+        (xhr) => console.log((xhr.loaded / xhr.total) * 100 + "% carregado"),
+        (error) => console.error("Erro ao carregar o arquivo .glb:", error)
+      );
+
+      // 4. EFEITO DAS LETRAS NO HOVER (SUBIR AO PASSAR MOUSE)
+      function initInteractiveLetters() {
+        const title = document.querySelector(".hover-reveal");
+        if (!title) return;
+
+        const text = title.textContent;
+        title.innerHTML = ""; // Limpa para criar spans
+
+        [...text].forEach((char) => {
+          const span = document.createElement("span");
+          span.textContent = char === " " ? "\u00A0" : char;
+          span.style.display = "inline-block";
+          span.style.willChange = "transform";
+          title.appendChild(span);
+
+          span.addEventListener("mouseenter", () => {
+            gsap.to(span, {
+              y: -25,
+              scale: 1.3,
+              color: "#fff",
+              duration: 0.3,
+              ease: "back.out(2)",
+            });
+          });
+
+          span.addEventListener("mouseleave", () => {
+            gsap.to(span, {
+              y: 0,
+              scale: 1,
+              color: "#d4ff3f",
+              duration: 0.4,
+              ease: "elastic.out(1, 0.3)",
+            });
+          });
+        });
+      }
+
+      // 5. Loop de Renderização Contínua
+      function animate() {
+        requestAnimationFrame(animate);
+        // Rotação suave constante para dar vida ao modelo
+        if (civic) {
+          civic.rotation.y += 0.002;
+        }
+        renderer.render(scene, camera);
+      }
+      animate();
+
+      // 6. Ajuste de Tela (Resize) Responsivo
+      window.addEventListener("resize", () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+
+        if (civic) {
+          const resScale = window.innerWidth < 768 ? 12 : 20;
+          civic.scale.set(resScale, resScale, resScale);
+        }
+      });
+
+      //FOoter
+      const cursor = document.querySelector(".cursor-revelador");
+      const footer = document.querySelector(".footer-container");
+      const menu = document.querySelector(".seu-menu-fixo"); // Ajuste o nome da sua classe aqui
+
+      document.addEventListener("mousemove", (e) => {
+        // 1. Lógica do Rastro (Trail)
+        // Só cria as bolinhas se o mouse estiver dentro do footer
+        if (e.target.closest(".footer-container")) {
+          createTrailDot(e.clientX, e.clientY);
+        }
+
+        // 2. Interatividade do Texto (Skew Effect)
+        const marqueeContent = document.querySelector(".marquee-content");
+        if (marqueeContent) {
+          const skew = (window.innerWidth / 2 - e.pageX) / 40;
+          marqueeContent.style.transform = `skewX(${skew}deg)`;
+        }
+      });
+
+      // Função para criar cada bolinha do rastro
+      function createTrailDot(x, y) {
+        const dot = document.createElement("div");
+        dot.className = "trail-dot"; // Esta classe deve estar no seu CSS
+        dot.style.left = x + "px";
+        dot.style.top = y + "px";
+
+        document.body.appendChild(dot);
+
+        // Remove a bolinha após 600ms (tempo da animação vanish do CSS)
+        setTimeout(() => {
+          dot.remove();
+        }, 600);
+      }
+      // 3. Sensor de Seção para o Menu ficar Branco
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              // Quando entra no footer, força o menu a ficar branco
+              menu.style.setProperty("color", "#ffffff", "important");
+              menu
+                .querySelectorAll("a")
+                .forEach((link) => (link.style.color = "#ffffff"));
+            } else {
+              // Cor original do seu menu (ajuste para preto ou o que preferir)
+              menu.style.setProperty("color", "#000000");
+              menu
+                .querySelectorAll("a")
+                .forEach((link) => (link.style.color = "#000000"));
+            }
+          });
+        },
+        { threshold: 0.1 }
+      );
+
+      observer.observe(footer);
+    </script>
   </body>
 </html>
