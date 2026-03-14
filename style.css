@@ -45,6 +45,17 @@
         font-size: 28px;
         letter-spacing: -2px;
         z-index: 201;
+            filter: invert(100%);
+
+
+      }
+      .logo p {
+          filter: invert(100%);
+        }
+      .logo .logoIcon {
+        width: 120px;
+        z-index: 201;
+        color: var(--bg-text-dark);
       }
       .nav-links {
         display: flex;
